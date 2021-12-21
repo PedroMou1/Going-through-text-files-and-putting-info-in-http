@@ -1,0 +1,23 @@
+#! /usr/bin/env python3
+
+import os
+from os import listdir
+import requests
+
+url = "http://35.194.60.212/feedback/"
+dir = "/data/feedback/"
+list_files = [f for f in listdir(dir)]
+
+for file in list_files:
+
+ types = ["title","name","date","feedback"]
+ data = {}
+ with open(dir + file, "r") as txtfile:
+  x = 0
+  for line in txtfile:
+            data[types[x]] = line.rstrip('\n')
+            x += 1
+  response = requests.post(url,json=data)
+ if not response.status_code == 201:
+    print('Something went wrong')
+
